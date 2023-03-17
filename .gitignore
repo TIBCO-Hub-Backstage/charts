@@ -1,0 +1,19 @@
+logs
+*.log
+
+*.tgz
+
+.env
+.env.test
+
+# macOS
+.DS_Store
+dist-types
+
+# Temporary change files created by Vim
+*.swp
+
+# environment secrets
+environment.sh
+# secrets for other environments (prod, kubernetes data plane, etc)
+*.environment.sh
