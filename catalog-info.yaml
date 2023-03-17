@@ -1,0 +1,12 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tibco-hub-charts
+  description: |
+    Helm charts for TIBCO Hub
+  annotations:
+    github.com/project-slug: backstage/backstage
+spec:
+  type: library
+  owner: tibco-hub-core
+  lifecycle: experimental
