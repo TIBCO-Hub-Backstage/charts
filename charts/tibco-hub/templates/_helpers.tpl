@@ -2,7 +2,7 @@
 Return the proper image name
 */}}
 {{- define "backstage.image" -}}
-{{- $imageValues := dict "tag" (default .Values.backstage.image (include "tibco-hub.generated.buildNumber" .)) -}}
+{{- $imageValues := dict "tag" (.Values.backstage.image.tag | default (include "tibco-hub.generated.buildNumber" .)) -}}
 {{ include "common.images.image" (dict "imageRoot" (merge $imageValues .Values.backstage.image) "global" .Values.global) }}
 {{- end -}}
 
