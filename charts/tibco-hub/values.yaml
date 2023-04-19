@@ -84,7 +84,7 @@ backstage:
     registry: "reldocker.tibco.com"
 
     # -- Backstage image repository
-    repository: pdx/dx-tibco-hub
+    repository: pdx/tibco-hub
 
     # -- Backstage image tag (immutable tags are recommended)
     # if empty, it will use the CI buildNumber (tibco-hub.generated.buildNumber) or latest if not defined or empty
