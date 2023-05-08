@@ -57,3 +57,18 @@ Return the Postgres databaseSecret key to retrieve credentials for database
     {{- print "password" -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Form a URL using Control Plane hostname
+*/}}
+{{- define "tibco.cp.url" -}}
+{{- $ctx := .context | default . -}}
+{{- $url := $ctx.Values.global.cp.cpHostname | trimSuffix "/" -}}
+{{- if not (regexMatch "^http[s]://" $url) -}}
+    {{- $url = print "https://" $url -}}
+{{- end -}}
+{{- if .path -}}
+    {{- $url = print $url "/" (.path | trimPrefix "/") -}}
+{{- end -}}
+{{- print $url -}}
+{{- end -}}
