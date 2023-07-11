@@ -58,10 +58,18 @@ Return the Postgres databaseSecret key to retrieve credentials for database
 {{- end -}}
 {{- end -}}
 
+{{- define "tibcohub.platform.commonLabels" -}}
+{{- if ((.Values.global.tibco).dataPlaneId) }}platform.tibco.com/dataplane-id: {{ .Values.global.tibco.dataPlaneId | quote }}{{- end }}
+{{- if ((.Values.global.cp).instanceId) }}
+platform.tibco.com/capability-instance-id: {{ .Values.global.cp.instanceId | quote }}
+{{- end }}
+platform.tibco.com/workload-type: capability-service
+{{- end -}}
+
 {{/*
 Form a URL using Control Plane hostname
 */}}
-{{- define "tibco.cp.url" -}}
+{{- define "tibcohub.cp.url" -}}
 {{- $ctx := .context | default . -}}
 {{- $url := $ctx.Values.global.cp.cpHostname | trimSuffix "/" -}}
 {{- if not (regexMatch "^http[s]://" $url) -}}

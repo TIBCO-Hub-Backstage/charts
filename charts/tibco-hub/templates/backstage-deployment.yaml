@@ -8,6 +8,7 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
   labels: {{ include "common.labels.standard" . | nindent 4 }}
     app.kubernetes.io/component: backstage
+    {{- include "tibcohub.platform.commonLabels" . | nindent 4 }}
     {{- if .Values.commonLabels }}
     {{- include "common.tplvalues.render" ( dict "value" .Values.commonLabels "context" $ ) | nindent 4 }}
     {{- end }}
@@ -24,6 +25,7 @@ spec:
     metadata:
       labels: {{- include "common.labels.standard" . | nindent 8 }}
         app.kubernetes.io/component: backstage
+        {{- include "tibcohub.platform.commonLabels" . | nindent 8 }}
       annotations:
         checksum/app-config: {{ include "common.tplvalues.render" ( dict "value" .Values.backstage.appConfig "context" $) | sha256sum }}
         {{- if .Values.backstage.podAnnotations }}
@@ -86,11 +88,12 @@ spec:
           {{- range .Values.backstage.args }}
             - {{ . | quote }}
           {{- end }}
-          {{- if or .Values.backstage.appConfig .Values.backstage.extraAppConfig  }}
-            # always include the default config
+          {{- if .Values.backstage.defaultAppConfigFiles  }}
+          {{- range .Values.backstage.defaultAppConfigFiles }}
             - "--config"
-            - "{{ $installDir }}/app-config.yaml"
-          {{- end  }}
+            - "{{ $installDir }}/{{ . }}"
+          {{- end }}{{- /* end range  */}}
+          {{- end  }}{{- /* end if  */}}
           {{- if .Values.backstage.extraAppConfig }}
           {{- range .Values.backstage.extraAppConfig }}
             - "--config"
@@ -146,9 +149,9 @@ spec:
                     name: {{ include "backstage.tibcoEnvSecretsName" . }}
                     key: authClientSecret
             - name: AUTH_TIBCO_AUTHORIZATION_URL
-              value: {{ include "tibco.cp.url" (dict "path" "/idm/v1/oauth2/auth" "context" $) }}
+              value: {{ include "tibcohub.cp.url" (dict "path" "/idm/v1/oauth2/auth" "context" $) }}
             - name: AUTH_TIBCO_TOKEN_URL
-              value: {{ include "tibco.cp.url" (dict "path" "/idm/v1/oauth2/token" "context" $) }}
+              value: {{ include "tibcohub.cp.url" (dict "path" "/idm/v1/oauth2/token" "context" $) }}
             {{- end }}
             {{- if .Values.backstage.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}

@@ -114,6 +114,10 @@ backstage:
   # -- Backstage container command arguments
   args: []
 
+  # -- App config files that'll be loaded by default
+  defaultAppConfigFiles:
+   - 'app-config.production.yaml'
+
   # -- Extra app configuration files to inline into command arguments
   extraAppConfig: []
 
@@ -264,6 +268,8 @@ postgresql:
 
   # -- Switch to enable or disable the PostgreSQL helm chart
   enabled: false
+
+  commonLabels: '{{- include "tibcohub.platform.commonLabels" . -}}'
 
   # -- The authentication details of the Postgres database
   auth:
