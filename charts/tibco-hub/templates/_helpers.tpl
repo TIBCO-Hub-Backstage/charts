@@ -59,7 +59,7 @@ Return the Postgres databaseSecret key to retrieve credentials for database
 {{- end -}}
 
 {{- define "tibcohub.platform.commonLabels" -}}
-{{- if ((.Values.global.tibco).dataPlaneId) }}platform.tibco.com/dataplane-id: {{ .Values.global.tibco.dataPlaneId | quote }}{{- end }}
+{{- if ((.Values.global.cp).dataPlaneId) }}platform.tibco.com/dataplane-id: {{ .Values.global.cp.dataplaneId | quote }}{{- end }}
 {{- if ((.Values.global.cp).instanceId) }}
 platform.tibco.com/capability-instance-id: {{ .Values.global.cp.instanceId | quote }}
 {{- end }}
