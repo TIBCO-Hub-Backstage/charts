@@ -111,10 +111,8 @@ spec:
           {{- if or .Values.backstage.extraEnvVarsSecrets .Values.backstage.appEnvSecrets }}
           envFrom:
             {{- if .Values.backstage.extraEnvVarsSecrets }}
-            {{- range .Values.backstage.extraEnvVarsSecrets }}
             - secretRef:
-                name: {{ . }}
-            {{- end }}
+                name: {{ .Values.backstage.extraEnvVarsSecrets }}
             {{- end }}
             {{- if .Values.backstage.appEnvSecrets }}
             - secretRef:
