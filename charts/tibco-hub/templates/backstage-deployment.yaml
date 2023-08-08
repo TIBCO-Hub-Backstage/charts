@@ -119,6 +119,26 @@ spec:
                 name: {{ include "backstage.appEnvSecretsName" . }}
             {{- end }}
           {{- end }}
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: "/health"
+              port: {{ .Values.backstage.containerPorts.backend }}
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 1
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: "/health"
+              port: {{ .Values.backstage.containerPorts.backend }}
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 1
           env:
             - name: APP_CONFIG_backend_listen_port
               value: {{ .Values.backstage.containerPorts.backend | quote }}
