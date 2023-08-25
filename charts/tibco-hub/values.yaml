@@ -81,14 +81,13 @@ ingress:
 backstage:
   image:
 
-    registry: "reldocker.tibco.com"
+    registry: ""
 
     # -- Backstage image repository
     repository: pdx/tibco-hub
 
     # -- Backstage image tag (immutable tags are recommended)
-    # if empty, it will use the CI buildNumber (tibco-hub.generated.buildNumber) or latest if not defined or empty
-    tag: ""
+    tag: "latest"
 
     # -- Specify a imagePullPolicy.
     # Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'

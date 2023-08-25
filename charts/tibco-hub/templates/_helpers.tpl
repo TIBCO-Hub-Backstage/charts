@@ -2,8 +2,11 @@
 Return the proper image name
 */}}
 {{- define "backstage.image" -}}
-{{- $imageValues := dict "tag" (.Values.backstage.image.tag | default (include "tibco-hub.generated.buildNumber" .)) -}}
-{{ include "common.images.image" (dict "imageRoot" (merge $imageValues .Values.backstage.image) "global" .Values.global) }}
+{{- $CPImageValues := dict "registry" "reldocker.tibco.com" -}}
+{{- if .Values.global.cp -}}
+    {{- $CPImageValues = dict "registry" (.Values.global.cp.containerRegistry.url | default "reldocker.tibco.com") -}}
+{{- end -}}
+{{ include "common.images.image" (dict "imageRoot" (merge .Values.backstage.image $CPImageValues) "global" .Values.global) }}
 {{- end -}}
 
 {{/*
