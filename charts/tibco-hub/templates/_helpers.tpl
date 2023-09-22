@@ -102,11 +102,27 @@ Form a URL using Control Plane hostname
 {{- end }}
 {{- end -}}
 
+Form a URL using TIBCO HUB hostname
+*/}}
+{{- define "tibcohub.host.url" -}}
+{{- $ctx := .context | default . -}}
+{{- if ($ctx.Values.ingress).host }}
+{{- $url := $ctx.Values.ingress.host | trimSuffix "/" -}}
+{{- if not (regexMatch "^http[s]://" $url) -}}
+    {{- $url = print "https://" $url -}}
+{{- end -}}
+{{- if .path -}}
+    {{- $url = print $url "/" (.path | trimPrefix "/") -}}
+{{- end -}}
+{{- print $url -}}
+{{- end }}
+{{- end -}}
+
 {{- define "tibcohub.ingress.annotations" -}}
 nginx.ingress.kubernetes.io/auth-response-headers: >-
     X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Access-Token,X-Auth-Request-Access-Token,X-Atmosphere-Token
-nginx.ingress.kubernetes.io/auth-signin: {{ include "tibcohub.cp.url" (dict "path" "tibco/hub/oauth2/start?rd=$escaped_request_uri" "context" $) }}
-nginx.ingress.kubernetes.io/auth-url: {{ include "tibcohub.cp.url" (dict "path" "tibco/hub/oauth2/auth" "context" $) }}
+nginx.ingress.kubernetes.io/auth-signin: {{ include "tibcohub.host.url" (dict "path" "tibco/hub/oauth2/start?rd=$escaped_request_uri" "context" $) }}
+nginx.ingress.kubernetes.io/auth-url: {{ include "tibcohub.host.url" (dict "path" "tibco/hub/oauth2/auth" "context" $) }}
 nginx.ingress.kubernetes.io/configuration-snippet: |
     auth_request_set $token $upstream_http_authorization;
     proxy_set_header Authorization $token;
