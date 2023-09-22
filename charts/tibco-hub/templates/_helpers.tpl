@@ -16,7 +16,23 @@ Return the proper image name
 {{- if .Values.serviceAccount.create -}}
     {{ default (include "common.names.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
+    {{- if .Values.global.cp -}}
+    {{ default "default" .Values.global.cp.resources.serviceaccount.serviceAccountName }}
+    {{- else -}}
+    {{ default "default" .Values.serviceAccount.name  }}
+    {{- end -}} 
+{{- end -}}
+{{- end -}}
+# here we are overridding the helper function used in postgresql charts to set the serviceaccount.name based on user provided value from CP.
+{{- define "postgresql.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (include "common.names.fullname" .) .Values.serviceAccount.name }}
+{{- else -}}
+    {{- if .Values.global.cp -}}
+    {{ default "default" .Values.global.cp.resources.serviceaccount.serviceAccountName  }}
+    {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
+    {{- end -}}
 {{- end -}}
 {{- end -}}
 
@@ -74,6 +90,7 @@ Form a URL using Control Plane hostname
 */}}
 {{- define "tibcohub.cp.url" -}}
 {{- $ctx := .context | default . -}}
+{{- if ($ctx.Values.global.cp).cpHostname }}
 {{- $url := $ctx.Values.global.cp.cpHostname | trimSuffix "/" -}}
 {{- if not (regexMatch "^http[s]://" $url) -}}
     {{- $url = print "https://" $url -}}
@@ -82,4 +99,17 @@ Form a URL using Control Plane hostname
     {{- $url = print $url "/" (.path | trimPrefix "/") -}}
 {{- end -}}
 {{- print $url -}}
+{{- end }}
+{{- end -}}
+
+{{- define "tibcohub.ingress.annotations" -}}
+nginx.ingress.kubernetes.io/auth-response-headers: >-
+    X-Auth-Request-User,X-Auth-Request-Email,X-Forwarded-Access-Token,X-Auth-Request-Access-Token,X-Atmosphere-Token
+nginx.ingress.kubernetes.io/auth-signin: {{ include "tibcohub.cp.url" (dict "path" "tibco/hub/oauth2/start?rd=$escaped_request_uri" "context" $) }}
+nginx.ingress.kubernetes.io/auth-url: {{ include "tibcohub.cp.url" (dict "path" "tibco/hub/oauth2/auth" "context" $) }}
+nginx.ingress.kubernetes.io/configuration-snippet: |
+    auth_request_set $token $upstream_http_authorization;
+    proxy_set_header Authorization $token;
+    proxy_pass_header Authorization;
+nginx.ingress.kubernetes.io/proxy-buffer-size: 16k  
 {{- end -}}

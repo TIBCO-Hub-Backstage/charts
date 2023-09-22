@@ -62,11 +62,14 @@ ingress:
   className: ""
 
   # -- Additional annotations for the Ingress resource
-  annotations: {}
+  annotations: '{{- include "tibcohub.ingress.annotations" . -}}'
 
   # -- Hostname to be used to expose the route to access the backstage application (e.g: backstage.IP.nip.io)
   host: ""
-
+  
+  # -- pathPrefix to be used for the routes to access the backstage application (e.g: /tibco/hub )
+  pathPrefix: "/tibco/hub"
+  
   # -- Ingress TLS parameters
   tls:
 
@@ -267,6 +270,8 @@ postgresql:
 
   # -- Switch to enable or disable the PostgreSQL helm chart
   enabled: false
+
+  serviceAccount: 
 
   commonLabels: '{{- include "tibcohub.platform.commonLabels" . -}}'
 

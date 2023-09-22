@@ -122,9 +122,9 @@ spec:
           readinessProbe:
             httpGet:
               scheme: HTTP
-              path: "/health"
+              path: "/tibco/hub/health"
               port: {{ .Values.backstage.containerPorts.backend }}
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 1
@@ -132,9 +132,9 @@ spec:
           livenessProbe:
             httpGet:
               scheme: HTTP
-              path: "/health"
+              path: "/tibco/hub/health"
               port: {{ .Values.backstage.containerPorts.backend }}
-            initialDelaySeconds: 60
+            initialDelaySeconds: 120
             periodSeconds: 10
             timeoutSeconds: 5
             successThreshold: 1
