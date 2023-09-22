@@ -3,6 +3,26 @@ entries:
   tibco-hub:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2023-09-22T20:12:41.000677465Z"
+    dependencies:
+    - name: common
+      repository: https://charts.bitnami.com/bitnami
+      tags:
+      - bitnami-common
+      version: 1.x.x
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.x.x
+    description: A Helm chart for TIBCO Hub
+    digest: aaa1517f163a45c6e0266291567851432a7da97ca4a10e724a2bcfae05e60b62
+    name: tibco-hub
+    type: application
+    urls:
+    - https://github.com/TIBCO-Hub-Backstage/charts/releases/download/tibco-hub-0.4.10/tibco-hub-0.4.10.tgz
+    version: 0.4.10
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2023-09-22T18:29:25.639008405Z"
     dependencies:
     - name: common
@@ -301,4 +321,4 @@ entries:
     urls:
     - https://github.com/TIBCO-Hub-Backstage/charts/releases/download/tibco-hub-0.1.0/tibco-hub-0.1.0.tgz
     version: 0.1.0
-generated: "2023-09-22T18:29:25.639107018Z"
+generated: "2023-09-22T20:12:41.000767067Z"
