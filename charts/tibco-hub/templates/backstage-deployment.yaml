@@ -155,22 +155,6 @@ spec:
                   name: {{ include "backstage.postgresql.databaseSecretName" . }}
                   key: {{ include "backstage.postgresql.databaseSecretKey" . }}
             {{- end }}
-            # {{- if .Values.global.cp }}
-            # - name: AUTH_TIBCO_CLIENT_ID
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: {{ include "backstage.tibcoEnvSecretsName" . }}
-            #       key: authClientId
-            # - name: AUTH_TIBCO_CLIENT_SECRET
-            #   valueFrom:
-            #       secretKeyRef:
-            #         name: {{ include "backstage.tibcoEnvSecretsName" . }}
-            #         key: authClientSecret
-            # - name: AUTH_TIBCO_AUTHORIZATION_URL
-            #   value: {{ include "tibcohub.cp.url" (dict "path" "/idm/v1/oauth2/auth" "context" $) }}
-            # - name: AUTH_TIBCO_TOKEN_URL
-            #   value: {{ include "tibcohub.cp.url" (dict "path" "/idm/v1/oauth2/token" "context" $) }}
-            # {{- end }}
             {{- if .Values.backstage.extraEnvVars }}
             {{- include "common.tplvalues.render" ( dict "value" .Values.backstage.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
