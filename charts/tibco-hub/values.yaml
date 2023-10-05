@@ -345,3 +345,12 @@ metrics:
     # -- ServiceMonitor endpoint path
     # <br /> Note that the /metrics endpoint is NOT present in a freshly scaffolded Backstage app. To setup, follow the [Prometheus metrics tutorial](https://github.com/backstage/backstage/blob/master/contrib/docs/tutorials/prometheus-metrics.md).
     path: /metrics
+
+# Configuration needed for Fluentbit Sidecar for logging
+enableLogging: true
+
+fluentbit:
+  image:
+    registry: 664529841144.dkr.ecr.us-west-2.amazonaws.com
+    tag: stratosphere/fluentbit:1.9.4 
+    pullPolicy: Always
